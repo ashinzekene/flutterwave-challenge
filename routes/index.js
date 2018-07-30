@@ -1,5 +1,7 @@
 const express = require('express');
 const Ravepay = require('ravepay');
+const axios = require('axios');
+const { handleAxiosError } = require('../utils/helpers')
 
 const router = express.Router();
 
@@ -28,8 +30,6 @@ const def_payload = {
   device_fingerprint: "69e6b7f0b72037aa8428b70fbe03986c"
 };
 
-let txRef;
-
 router.get('/banks', (req, res) => {
   rave.Misc.getBanks()
     .then(resp => {
@@ -55,36 +55,53 @@ router.get('/status', (req, res) => {
 })
 
 router.post('/charge', (req, res) => {
-  console.log('Req body', req.body);
   let payload = req.body;
   rave.Card.charge(payload).then(resp => {
       //Get the ref of the card charge from response body. This will be used to validate the transaction
-      console.log('Received', resp.body.data);
+      console.log('Received response');
       txRef = resp.body.data.txRef;
       res.json(resp.body)
     })
     .catch(err => {
       //Handle error
-      console.log('Encountered error', err)
+      console.log('Encountered error', err);
+      res.status(400).json({
+        err: err
+      });
+    })
+})
+
+router.post('/qr', (req, res) => {
+  axios.post('https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge', req.body)
+    .then(res => {
+      console.log('Received qr response');
+      txRef = resp.body.data.txRef;
+      res.json(resp.body)
+    })
+    .catch(err => {
+      //Handle error
+      let error = handleAxiosError(err);
+      console.log('Encountered qr error');
+      res.status(400).json({ error });
+    })
+})
+
+router.post('/validate', (req, res) => {
+  rave.Card.validate(req.body)
+    .then(resp => {
+      console.log('Successful validation', resp);
+      res.json(resp.body.data)
+    })
+    .catch(err => {
+      console.log('Error in validation');
       res.status(404).json({
         err: err
       });
     })
 })
 
+router.post('/bulk-charge', (req, res) => {
 
-router.post('/validate', (req, res) => {
-  rave.Card.validate(req.body)
-    .then(resp => {
-      console.log('Successful validation', resp.body);
-      res.json(resp.body)
-    })
-    .catch(err => {
-      console.log('Error in validation', err);
-      res.status(404).json({
-        err: err
-      });
-    })
 })
 
 module.exports = router;

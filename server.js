@@ -6,11 +6,18 @@ const path = require('path');
 const routes = require('./routes/index');
 mongoose.Promise = require('bluebird');
 const app = express();
-const port = 4331;
+let port = 4331;
+
 // NODE_ENV is set to true by heroku
 const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 
-console.log('ENV TEST', process.env.TEST_ENV);
+console.log('Environment ====>>', process.env.NODE_ENV)
+
+if (isTest) {
+  port = 4444;
+}
+
 // require('./utils/mongoose');
 // require('./utils/auth')(app);
 
@@ -18,7 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 if (!isProduction) {
-  process.stdout.write('Not in production');
+  process.stdout.write('Not in production\n');
   app.use((req, res, next) => {
     process.stdout.write(`\n${req.method.toUpperCase()}: ${req.url}`);
     next();
@@ -44,7 +51,7 @@ app.listen(port, err => {
   if (err) {
     return process.stdout.write('An error occurred');
   }
-  process.stdout.write(`Server running on port ${port}`);
+  process.stdout.write(`Server running on port ${port}\n`);
 });
 
 module.exports = app

@@ -9,12 +9,17 @@
   "author": "Ashinze Ekene",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongoose": "^5.2.5",
+    "passport": "^0.4.0",
     "ravepay": "0.0.4"
   },
   "devDependencies": {
-    "jest": "^23.4.2"
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "mocha": "^5.2.0",
+    "supertest": "^3.1.0"
   }
 }

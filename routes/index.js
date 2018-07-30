@@ -54,15 +54,14 @@ router.get('/status', (req, res) => {
     })
 })
 
-router.post('/card-charge', (req, res) => {
-  // if (req.params.cardno) payload.cardno = req.params.cardno
+router.post('/charge', (req, res) => {
   console.log('Req body', req.body);
-  let payload = Object.assign(def_payload, req.body)
+  let payload = req.body;
   rave.Card.charge(payload).then(resp => {
       //Get the ref of the card charge from response body. This will be used to validate the transaction
       console.log('Received', resp.body.data);
       txRef = resp.body.data.txRef;
-      res.json(resp)
+      res.json(resp.body)
     })
     .catch(err => {
       //Handle error

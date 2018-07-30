@@ -46,3 +46,5 @@ app.listen(port, err => {
   }
   process.stdout.write(`Server running on port ${port}`);
 });
+
+module.exports = app

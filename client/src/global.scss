@@ -30,3 +30,10 @@ ion-title:after {
   bottom: -10px;
   width: 70px;
 }
+
+.title-with-button ion-title {
+  display: inline-block;
+}
+.title-with-button ion-button {
+  float: right;;
+}

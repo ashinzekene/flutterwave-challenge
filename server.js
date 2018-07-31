@@ -13,8 +13,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 
 
-// require('./utils/mongoose');
-// require('./utils/auth')(app);
+require('./utils/mongoose');
+require('./utils/auth')(app);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 if (!isProduction) {
   process.stdout.write('Not in production\n');
   app.use((req, res, next) => {
-    process.stdout.write(`\n${req.method.toUpperCase()}: ${req.url}`);
+    process.stdout.write(`\n${req.method.toUpperCase()}: ${req.url}\n`);
     next();
   });
   // app.use((req, res, next) => {

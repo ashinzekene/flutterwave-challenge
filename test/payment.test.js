@@ -8,73 +8,25 @@ const {
   otp1
 } = require('./utils')
 
-let transaction_reference;
+const payment = {
+  amount: 6000,
+  transaction_reference: 'no_ref',
+  account: 'nsdsoone',
+  description: 'sdno desc',
+  status: 'failed'
+}
 
-describe('GET /banks', () => {
-  it('Should should show banks', done => {
-    request.get('/api/payments/banks')
+describe('POST /payment', () => {
+  it('Should create a payment', done => {
+    request.post('/api/payments/create')
+      .send(payment)
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .end((err, resp) => {
-        if (err) done(err)
-        expect(resp).to.not.be.undefined;
-        expect(resp.body).to.an('array')
+        if (err) return done(err)
+        expect(resp.body).to.have.any.keys('_id', 'createdAt', 'amount')
+        expect(resp.body.amount).to.equal(payment.amount)
+        expect(resp.body.account).to.equal(payment.account)
         done();
       })
   })
-  it('Should should show banks with bankname bankcode and internetbanking', done => {
-    request.get('/api/payments/banks')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .end((err, resp) => {
-        if (err) done(err)
-        expect(resp).to.not.be.undefined;
-        expect(resp.body[0]).to.have.keys('bankname', 'bankcode', 'internetbanking');
-        done();
-      })
-  })
-})
-
-describe('POST /api/payments/charge', () => {
-  it('Should should successfully charge', done => {
-    request.post('/api/payments/charge')
-      .send(payload1)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .end((err, resp) => {
-        if (err) done(err)
-        expect(resp.body).to.not.be.undefined;
-        done();
-      })
-  })
-  it('Should should return a success response', done => {
-    request.post('/api/payments/charge')
-      .send(payload1)
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .end((err, resp) => {
-        if (err) done(err)
-        expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.any.keys('id', 'flwRef', 'raveRef');
-        transaction_reference = resp.body.data.flwRef;
-        done();
-      })
-  })
-})
-
-
-describe('POST /api/payments/verify', () => {
-  it('Should should successfully verify transaction', done => {
-    request.post('/api/payments/validate')
-      .send({ otp: otp1, PBFPubKey ,transaction_reference })
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .end((err, resp) => {
-        if (err) done(err)
-        expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.any.keys('data');
-        done();
-      })
-  })
-
 })

@@ -13,13 +13,13 @@ const staff = {
 }
 
 describe('POST /staffs/create', () => {
-  it.only('Should not create staff is user is unauthenticated', done => {
+  it('Should not create staff is user is unauthenticated', done => {
     request.post('/api/staffs/create')
       .send(staff)
       .set('Accept', 'application/json')
       .expect(401)
       .end((err, res) => {
-        if (err) done(err)
+        if (err) return done(err)
         expect(res.text).to.equal('Unauthorized')
         done();
       })

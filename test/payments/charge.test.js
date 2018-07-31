@@ -11,7 +11,7 @@ describe('POST /api/charge', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        if (err) done(err)
+        if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
         done();
       })
@@ -22,7 +22,7 @@ describe('POST /api/charge', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        if (err) done(err)
+        if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
         expect(resp.body.data).to.have.any.keys('id', 'flwRef', 'raveRef');
         done();

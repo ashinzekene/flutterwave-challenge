@@ -6,15 +6,15 @@
   "scripts": {
     "start": "node server.js && exit 0",
     "dev": "nodemon --exec node -r dotenv/config server.js dotenv_config_path=.env-dev --ignore tests/",
-    "test": "mocha test/*.test.js -c -t 11000 --exit",
-    "test-watch": "nodemon --exec npm test --watch test"
+    "test": "mocha test/*.test.js -c -t 12000 --exit",
+    "test-watch": "nodemon --exec npm test"
   },
   "author": "Ashinze Ekene",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
-    "bluebird": "^3.5.1",
+  "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",

@@ -9,7 +9,7 @@ describe('GET /banks', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        if (err) done(err)
+        if (err) return done(err)
         expect(resp).to.not.be.undefined;
         expect(resp.body).to.an('array')
         done();
@@ -20,7 +20,7 @@ describe('GET /banks', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        if (err) done(err)
+        if (err) return done(err)
         expect(resp).to.not.be.undefined;
         expect(resp.body[0]).to.have.keys('bankname', 'bankcode', 'internetbanking');
         done();

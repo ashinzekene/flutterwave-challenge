@@ -6,17 +6,12 @@ const path = require('path');
 const routes = require('./routes/index');
 mongoose.Promise = require('bluebird');
 const app = express();
-let port = 4331;
 
 // NODE_ENV is set to true by heroku
+const port = process.env.PORT;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 
-console.log('Environment ====>>', process.env.NODE_ENV)
-
-if (isTest) {
-  port = 4444;
-}
 
 // require('./utils/mongoose');
 // require('./utils/auth')(app);

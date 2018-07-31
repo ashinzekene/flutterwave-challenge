@@ -7,6 +7,7 @@ const staffSchema = new Schema({
   first_name: String,
   last_name: String,
   account_no: String,
+  phone_no: String,
   bank_name: String,
   gender: {
     type: String,

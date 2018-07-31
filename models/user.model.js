@@ -5,7 +5,7 @@ const {
   Schema
 } = mongoose;
 
-const userSchema = new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     unique: true,
@@ -62,6 +62,30 @@ UserSchema.methods.comparePassword = function (candidatePassword, cb) {
   });
 };
 
-const User = mongoose.model('User', userSchema);
+UserSchema.statics.getAuthenticated = function (username, password, cb) {
+  this.findOne({
+    username: username
+  }, function (err, user) {
+    if (err) return cb(err);
+    // making sure the user exists
+    if (!user) {
+      console.log('No user found');
+      return cb(null, null, { message: 'Username or password incorrect' });
+    }
+    // testing for a matching password
+    user.comparePassword(password, function (err, isMatch) {
+      if (err) return cb(err);
+      // check if the password was a match
+      if (isMatch) {
+        return cb(null, user);
+      }
+      // password is incorrect
+      console.log('Incorrect password');
+      return cb(null, null, { message: 'Username or password incorrect' });
+    });
+  });
+};
+
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { TabsPage } from './tabs.page';
 import { HomePage } from '../home/home.page';
-import { AboutPage } from '../about/about.page';
-import { ContactPage } from '../contact/contact.page';
+import { ProductsPage } from '../products/products.page';
+import { EmployeesPage } from '../employees/employees.page';
+import { SettingsPage } from '../settings/settings.page';
 
 const routes: Routes = [
   {
@@ -17,14 +18,19 @@ const routes: Routes = [
         component: HomePage
       },
       {
-        path: 'about',
-        outlet: 'about',
-        component: AboutPage
+        path: 'products',
+        outlet: 'products',
+        component: ProductsPage
       },
       {
-        path: 'contact',
-        outlet: 'contact',
-        component: ContactPage
+        path: 'employees',
+        outlet: 'employees',
+        component: EmployeesPage
+      },
+      {
+        path: 'settings',
+        outlet: 'settings',
+        component: SettingsPage
       }
     ]
   },

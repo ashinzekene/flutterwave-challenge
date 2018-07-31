@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
-const { Schema } = mongoose;
+const {
+  Schema
+} = mongoose;
 
 const userSchema = new Schema({
   username: {
@@ -23,73 +26,40 @@ const userSchema = new Schema({
     type: String,
     unique: true,
   },
-  following: [{
+  staff: [{
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Staff',
   }],
-  starred_polls: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Poll',
-  }],
-  voted_polls: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Poll',
-  }],
-}, { timestamps: true });
-
-
-userSchema.methods.createdByMe = function (poll) {
-  return this.created_polls.some(id => `${id}` === `${poll}`);
-};
-
-userSchema.methods.hasStarred = function (poll) {
-  return this.voted_polls.some(id => `${id}` === `${poll}`);
-};
-
-userSchema.methods.hasVoted = function (poll) {
-  return this.voted_polls.some(id => `${id}` === `${poll}`);
-};
-
-userSchema.methods.isFollowing = function (userId) {
-  return this.following.some(id => `${id}` === `${userId}`);
-};
-
-userSchema.static('findByUsername', function (username, cb) {
-  return this.find({ username }, cb);
+}, {
+  timestamps: true
 });
 
-userSchema.static('findByEmail', function (email, cb) {
-  return this.find({ email }, cb);
+UserSchema.pre('save', function (next) {
+  var user = this;
+
+  // only hash the password if it has been modified (or is new)
+  if (!user.isModified('password')) return next();
+
+  // generate a salt
+  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+    if (err) return next(err);
+
+    // hash the password along with our new salt
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+
+      // override the cleartext password with the hashed one
+      user.password = hash;
+      next();
+    });
+  });
 });
 
-userSchema.methods.toJSONFor = function (user) {
-  if (!user) {
-    return {
-      _id: this._id,
-      username: this.username,
-      avatar_url: this.avatar_url,
-      first_name: this.first_name,
-      last_name: this.last_name,
-      gender: this.gender,
-      updatedAt: this.updatedAt,
-      createdAt: this.createdAt,
-      voted_polls: this.voted_polls
-    }
-  }
-  return {
-      _id: this._id,
-      username: this.username,
-      avatar_url: this.avatar_url,
-      first_name: this.first_name,
-      last_name: this.last_name,
-      gender: this.gender,
-      following: user.isFollowing(this._id),
-      follower: this.following.some(id => `${id}` === `${user._id}`),
-      updatedAt: this.updatedAt,
-      createdAt: this.createdAt,
-      voted_polls: this.voted_polls      
-    };
-    // following: this.following.toProfileJSONFor(user)
+UserSchema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
 const User = mongoose.model('User', userSchema);

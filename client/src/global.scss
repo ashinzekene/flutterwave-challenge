@@ -10,3 +10,30 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+body {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+}
+
+.header-md::after {
+  display: none;
+}
+
+ion-title {
+  color: var(--ion-color-primary);
+  position: relative;
+}
+
+ion-title:after {
+  content: '';
+  position: absolute;
+  border-bottom: 3px solid var(--ion-color-primary);
+  bottom: -10px;
+  width: 70px;
+}
+
+.title-with-button ion-title {
+  display: inline-block;
+}
+.title-with-button ion-button {
+  float: right;;
+}

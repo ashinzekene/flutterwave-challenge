@@ -11,18 +11,18 @@
     </h1>
     <ion-item>
       <ion-label color="primary" position="floating">Username</ion-label>
-      <ion-input type="text" color="primary" minlength="5" required></ion-input>
+      <ion-input type="text"[(ngModel)]="username" color="primary" minlength="5" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label color="primary" position="floating">Email</ion-label>
-      <ion-input type="email" color="primary" minlength="5" required></ion-input>
+      <ion-input type="email"[(ngModel)]="email" color="primary" minlength="5" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label color="primary" position="floating">Pasword</ion-label>
-      <ion-input type="password" color="primary" minlength="5" required></ion-input>
+      <ion-label color="primary" position="floating">Password</ion-label>
+      <ion-input type="password"[(ngModel)]="password" color="primary" minlength="5" required></ion-input>
     </ion-item>
     <div class="button-container">
-      <ion-button shape="round" href='/auth' color="primary" fill="outline">Sign Up</ion-button>
+      <ion-button (click)="createAccount()" shape="round" href='/auth' color="primary" fill="outline">Sign Up</ion-button>
     </div>
   </div>
 </ion-content>

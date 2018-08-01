@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { User } from '../user';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
+import { StoreService } from './store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { map } from 'rxjs/operators';
 export class AuthService {
   base_url = environment.base_url + '/users';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private store: StoreService) { }
 
   createUser(username: string, email: string, password: string): Observable<Promise<User>> {
     return this.http.post(this.base_url + '/create', { username, email, password })
@@ -26,4 +27,9 @@ export class AuthService {
         map((res: Response) => res.json())
       );
   }
+
+  private generateHeaders() {
+    return { };
+  }
+
 }

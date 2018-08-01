@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Staff = require('../models/staff.model.js');
+const User = require('../controllers/user');
+const Employee = require('../models/employee.model.js');
 const { requireAuth } = require('../utils/auth')();
 
 router.post('/create', requireAuth, (req, res) => {
-  Staff.create(req.body)
-    .then(staff => User.addStaff(staff))
+  Employee.create(req.body)
+    .then(employee => User.addEmployee(employee))
     .then(result => {
       res.json(result)
     })
@@ -15,18 +16,17 @@ router.post('/create', requireAuth, (req, res) => {
 })
 
 router.post('/remove', requireAuth, (req, res) => {
-  Staff.findByIdAndRemove(req.body.id)
-    .then(staff => User.removeStaff(staff))
+  Employee.findByIdAndRemove(req.body.id)
+    .then(employee => User.removeEmployee(employee))
     .then(result => {
       res.json(result)
     })
 })
 
 router.post('/edit', requireAuth, (req, res) => {
-  Staff.findByIdAndRemove(req.body.id)
-    .then(staff => User.removeStaff(staff))
-    .then(result => {
-      res.json(result)
+  Employee.findByIdAndRemove(req.body.id)
+    .then(employee => {
+      res.json(employee);
     })
 })
 

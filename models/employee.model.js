@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const staffSchema = new Schema({
+const employeeSchema = new Schema({
   avatar_url: String,
   first_name: String,
   last_name: String,
@@ -19,6 +19,6 @@ const staffSchema = new Schema({
   },
 }, { timestamps: true });
 
-const Staff = mongoose.model('Staff', staffSchema);
+const Employee = mongoose.model('Employee', employeeSchema);
 
-module.exports = Staff;
+module.exports = Employee;

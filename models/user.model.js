@@ -27,9 +27,9 @@ const UserSchema = new Schema({
     type: String,
     unique: true,
   },
-  staff: [{
+  employees: [{
     type: Schema.Types.ObjectId,
-    ref: 'Staff',
+    ref: 'Employee',
   }],
 }, {
   timestamps: true

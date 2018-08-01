@@ -13,6 +13,7 @@ import { AuthService } from './services/auth.service';
 import { ProductService } from './services/product.service';
 import { EmployeesService } from './services/employees.service';
 import { PaymentService } from './services/payment.service';
+import { StoreService } from './services/store.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { PaymentService } from './services/payment.service';
     ProductService,
     EmployeesService,
     PaymentService,
+    StoreService,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

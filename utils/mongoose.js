@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = require('bluebird')
 
-const DB_URI = process.env.DB_URL || 'mongodb://127.0.0.1:27017/staff-mgmt';
+const DB_URI = process.env.DB_URL || 'mongodb://127.0.0.1:27017/employee-mgmt';
 
 mongoose.connect(DB_URI, { useNewUrlParser: true }, (err) => {
   if (err) console.log(err);

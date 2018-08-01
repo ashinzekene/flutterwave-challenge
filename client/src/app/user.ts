@@ -6,5 +6,5 @@ export class User {
   last_name?: string;
   password?: string;
   gender?: string;
-  staff?: string;
+  employees?: string;
 }

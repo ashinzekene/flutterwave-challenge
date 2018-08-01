@@ -6,5 +6,6 @@ export class User {
   last_name?: string;
   password?: string;
   gender?: string;
+  jwt?: string;
   employees?: string;
 }

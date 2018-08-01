@@ -15,7 +15,6 @@ const UserSchema = new Schema({
   avatar_url: String,
   first_name: String,
   last_name: String,
-  theme: String,
   password: {
     type: String,
     required: true,
@@ -46,11 +45,9 @@ UserSchema.pre('save', function (next) {
     if (err) return next(err);
 
     // hash the password along with our new salt
-    console.log('Hashing...')
     bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) return next(err);
 
-      console.log('Hashing complete...')
       // override the cleartext password with the hashed one
       user.password = hash;
       next();
@@ -73,7 +70,7 @@ UserSchema.statics.getAuthenticated = function (username, password, cb) {
     // making sure the user exists
     if (!user) {
       console.log('No user found');
-      return cb(null, null, { message: 'Username or password incorrect' });
+      return cb(null, false, { message: 'Username or password incorrect' });
     }
     // testing for a matching password
     user.comparePassword(password, function (err, isMatch) {
@@ -84,7 +81,7 @@ UserSchema.statics.getAuthenticated = function (username, password, cb) {
       }
       // password is incorrect
       console.log('Incorrect password');
-      return cb(null, null, { message: 'Username or password incorrect' });
+      return cb(null, false, { message: 'Username or password incorrect' });
     });
   });
 };

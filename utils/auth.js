@@ -10,16 +10,14 @@ const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 
 const jwtOptions = {
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('bearer'),
   secretOrKey: process.env.PASSPORT_SECRET || 'secret',
   expiresIn: '14d',
   // issuer = 'flutterwave_challenge',
   // audience = 'flutterwave_challenge',
 };
 
-const requireAuth = passport.authenticate('jwt', {
-  session: false
-});
+const requireAuth = passport.authenticate('jwt');
 
 const requireLogin = passport.authenticate('local', {
   session: false
@@ -52,13 +50,6 @@ passport.use(new LocalStrategy({
   }
 ));
 
-// function allowOnlyUsers(req, res, next) {
-//   const present = roles.findIndex(role => role === res.payload.role);
-//   if (present === -1) return res.status(401).json({
-//     result: 'You cannot access this route'
-//   });
-//   return next();
-// };
 
 
 module.exports = (app) => {

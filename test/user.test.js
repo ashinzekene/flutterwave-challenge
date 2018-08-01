@@ -12,12 +12,12 @@ const user = {
   email: 'testuser@mail.com'
 }
 
-describe('POST /users/create', () => {
+let jwt;
+
+describe.only('POST /users/create', () => {
   before(function() {
-    console.log('Deleting users')
     Users.deleteMany({ username: /.+/}, (err) => {
       if (err) return console.log(err)
-      console.log('Removed users')
     })
   });
 
@@ -38,9 +38,10 @@ describe('POST /users/create', () => {
     request.post('/api/users/create')
       .send(user)
       .set('Accept', 'application/json')
+      .expect(200)
       .end((err, res) => {
         if (err) return done(err)
-        expect(res.body).to.have.any.keys('createdAt', 'username', 'last_name', 'phone_no', 'gender');
+        expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email', 'jwt');
         expect(res.body).to.have.property('username', user.username);
         expect(res.body).to.have.property('email', user.email);
         done();
@@ -51,13 +52,60 @@ describe('POST /users/create', () => {
     user.username = 'user222'
     user.email = 'anotheremail@mail.com'
     request.post('/api/users/create')
-      .send(user)
-      .set('Accept', 'application/json')
+    .send(user)
+    .set('Accept', 'application/json')
+      .expect(200)
       .end((err, res) => {
         if (err) return done(err)
-        expect(res.body).to.have.any.keys('createdAt', 'username', 'last_name', 'phone_no', 'gender');
+        expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email', 'jwt');
         expect(res.body).to.have.property('username', user.username);
         expect(res.body.password).to.not.equal(user.email.password);
+        done();
+      })
+  })
+  it('Should not login with invalid credentials', done => {
+    user.password = 'testpassword---!--'
+    user.username = 'user222'
+    const { username, password } = user;
+    request.post('/api/users/login')
+      .send({ username, password })
+      .set('Accept', 'application/json')
+      .expect(401)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body).to.be.empty
+        done();
+      })
+  })
+  it('Should login successfully', done => {
+    user.password = 'testpassword'
+    user.username = 'user222'
+    const { username, password } = user;
+    request.post('/api/users/login')
+      .send({ username, password })
+      .set('Accept', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email', 'jwt');
+        expect(res.body).to.have.property('username', user.username);
+        jwt = res.body.jwt;
+        expect(res.body.password).to.not.equal(user.email.password);
+        done();
+      })
+  })
+  it('Should authenticate with jwt', done => {
+    request.get('/api/users/protected')
+      .set('Accept', 'application/json')
+      .set('Authentication', `Bearer ${jwt}`)
+      // .set('Authentication', `${jwt}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) return done(err)
+        expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email');
+        expect(res.body).to.have.property('username', user.username);
+        expect(res.body.password).to.not.equal(user.email.password);
+        jwt = res.body.jwt;
         done();
       })
   })

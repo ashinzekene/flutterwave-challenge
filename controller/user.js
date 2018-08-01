@@ -1,5 +1,6 @@
 const passport = require('passport')
 const User = require('../models/user.model.js');
+const { signJWT } = require('../utils/auth')()
 
 module.exports = {
   create(req, res) {
@@ -11,17 +12,20 @@ module.exports = {
 
     newUser.save((error, user) => {
       if (error) {
-        res.status(400).json(error)
+        return res.status(400).json(error)
       }
-      res.json(user);
+      const { id, username, email, createdAt, updatedAt, password } = user;
+      const jwt = signJWT(user.id, user.username);
+      res.json({ id, username, email, createdAt, updatedAt, password, jwt });
     })
   },
-
+  login(req, res) {
+    const { id, username, email, createdAt, updatedAt, password } = req.user;
+    const jwt = signJWT(req.user.id, req.user.username);
+    res.json({ id, username, email, createdAt, updatedAt, password, jwt });
+  },
   update(req, res, next) {
-    const {
-      id,
-      ...update
-    } = req.body;
+    const { id, ...update } = req.body;
     User.findByIdAndUpdate(id, update)
       .then(user => {
         res.json(user);

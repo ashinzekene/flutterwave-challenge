@@ -55,7 +55,7 @@ describe('POST /api/transactions/charge', () => {
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.any.keys('id', 'flwRef', 'raveRef');
+        expect(resp.body.data).to.have.include.all.keys('id', 'flwRef', 'raveRef');
         transaction_reference = resp.body.data.flwRef;
         done();
       })
@@ -72,7 +72,7 @@ describe('POST /api/transactions/verify', () => {
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.any.keys(
+        expect(resp.body.data).to.have.include.all.keys(
           'avsresponsecode',
           'avsresponsemessage',
           'otptransactionidentifier',

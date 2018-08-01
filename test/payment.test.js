@@ -23,7 +23,7 @@ describe('POST /payment', () => {
       .set('Accept', 'application/json')
       .end((err, resp) => {
         if (err) return done(err)
-        expect(resp.body).to.have.any.keys('_id', 'createdAt', 'amount')
+        expect(resp.body).to.have.include.all.keys('_id', 'createdAt', 'amount')
         expect(resp.body.amount).to.equal(payment.amount)
         expect(resp.body.account).to.equal(payment.account)
         done();

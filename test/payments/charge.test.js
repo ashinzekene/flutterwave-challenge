@@ -24,7 +24,7 @@ describe('POST /api/charge', () => {
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.any.keys('id', 'flwRef', 'raveRef');
+        expect(resp.body.data).to.have.include.all.keys('id', 'flwRef', 'raveRef');
         done();
       })
   })

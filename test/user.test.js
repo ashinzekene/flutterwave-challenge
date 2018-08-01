@@ -97,10 +97,11 @@ describe.only('POST /users/create', () => {
   it('Should authenticate with jwt', done => {
     request.get('/api/users/protected')
       .set('Accept', 'application/json')
-      .set('Authentication', `Bearer ${jwt}`)
-      // .set('Authentication', `${jwt}`)
-      .expect(200)
+      // .set('Authentication', `Bearer ${jwt}`)
+      .set('Authentication', `${jwt}`)
+      // .expect(200)
       .end((err, res) => {
+        console.log(res.text);
         if (err) return done(err)
         expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email');
         expect(res.body).to.have.property('username', user.username);

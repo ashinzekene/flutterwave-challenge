@@ -1,20 +1,37 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Employees</ion-title>
+  <ion-toolbar class="title-with-button">
+    <ion-title>
+      Employees
+    </ion-title>
+    <ion-button href="/create-employee" shape="round" color="primary" fill="clear">
+      <ion-icon name="add"></ion-icon>
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
   <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <ion-card-title>Card Title</ion-card-title>
-    </ion-card-header>
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-card-title color="primary">Okafor Tunde</ion-card-title>
+    </ion-item>
+    <ion-subtitle>Zenith Bank</ion-subtitle>
 
     <ion-card-content>
-      Keep close to Nature's heart... and break clear away, once in awhile, and climb a mountain or spend a week in the woods.
-      Wash your spirit clean.
+      <ion-button class="pay-button" shape="round" slot="end">Pay</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngFor="employee of employees">
+    <ion-item>
+      <ion-icon name="person" slot="start"></ion-icon>
+      <ion-card-title color="primary">Okafor Tunde</ion-card-title>
+    </ion-item>
+    <ion-subtitle>Zenith Bank</ion-subtitle>
+
+    <ion-card-content>
+      <ion-button class="pay-button" shape="round" slot="end">Pay</ion-button>
     </ion-card-content>
   </ion-card>
 

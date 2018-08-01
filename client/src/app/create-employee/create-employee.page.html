@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create an Employee</ion-title>
+    <ion-button href="/employees" slot="start" fill="clear" shape="round">
+      <ion-icon color="primary" name="arrow-back"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="result-container" *ngIf="success">
+    <ion-icon color="primary" size="large" name="person"></ion-icon>
+    <h1>
+      <ion-text color="primary">You have created an Employee</ion-text>
+    </h1>
+  </div>
+  <div class="result-container" *ngIf="failure">
+    <ion-icon color="primary" name="person"></ion-icon>
+    <h1>
+      <ion-text color="primary">You have created an Employee</ion-text>
+    </h1>
+  </div>
+  <div *ngIf="!success && !failure" class="form-container">
+    <h1>
+      <ion-text color="primary">CREATE AN EMPLOYEE</ion-text>
+    </h1>
+    <ion-item>
+      <ion-label color="primary" position="floating">Name</ion-label>
+      <ion-input type="text" [(ngModel)]="name" color="primary" minlength="5" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Email</ion-label>
+      <ion-input type="email" [(ngModel)]="email" color="primary" minlength="5" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Account Number</ion-label>
+      <ion-input type="number" [(ngModel)]="account_no" color="primary" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Bank</ion-label>
+      <ion-input type="text" [(ngModel)]="bank_name" color="primary" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" position="floating">Pay</ion-label>
+      <ion-input type="number" [(ngModel)]="pay" color="primary" minlength="5" required></ion-input>
+    </ion-item>
+    <div class="button-container">
+      <ion-button (click)="createAccount()" shape="round" href='/auth' color="primary" fill="outline">Sign Up</ion-button>
+    </div>
+  </div>

@@ -10,7 +10,7 @@ const ExtractJWT = passportJWT.ExtractJwt;
 const JWTStrategy = passportJWT.Strategy;
 
 const jwtOptions = {
-  jwtFromRequest: ExtractJWT.fromAuthHeaderWithScheme('bearer'),
+  jwtFromRequest: ExtractJWT.fromHeader('authorization'),
   secretOrKey: process.env.PASSPORT_SECRET || 'secret',
   expiresIn: '14d',
   // issuer = 'flutterwave_challenge',
@@ -24,7 +24,7 @@ const requireLogin = passport.authenticate('local', {
 });
 
 function signJWT(id, username) {
-  return jwt.sign({
+  return 'jwt ' + jwt.sign({
     id,
     username
   }, jwtOptions.secretOrKey, {
@@ -32,11 +32,8 @@ function signJWT(id, username) {
   });
 }
 
-passport.use(new JWTStrategy(jwtOptions, (payload, done) => {
-  console.log("Authing user", payload)
-  User.findById(payload.id)
-    .then(user => done(null, user))
-    .catch(err => done)
+passport.use(new JWTStrategy(jwtOptions, (jwt, cb) => {
+  console.log('CALLLLLLLL BACK')
 }));
 
 

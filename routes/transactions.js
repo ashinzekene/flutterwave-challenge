@@ -10,25 +10,6 @@ const SECRET_KEY = process.env.SECRET_KEY;
 
 const rave = new Ravepay(PUBLIC_KEY, SECRET_KEY, !!PRODUCTION_FLAG);
 
-const def_payload = {
-  cardno: "5438898014560229",
-  cvv: "789",
-  expirymonth: "07",
-  expiryyear: "18",
-  currency: "NGN",
-  pin: "7552",
-  country: "NG",
-  amount: "10",
-  email: "user@example.com",
-  txRef: "MC-7663-YU",
-  phonenumber: "1234555",
-  suggested_auth: "PIN",
-  firstname: "user1",
-  lastname: "user2",
-  IP: "355426087298442",
-  device_fingerprint: "69e6b7f0b72037aa8428b70fbe03986c"
-};
-
 router.get('/banks', (req, res) => {
   rave.Misc.getBanks()
     .then(resp => {
@@ -71,7 +52,10 @@ router.post('/charge', (req, res) => {
 })
 
 router.post('/qr', (req, res) => {
-  axios.post('https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge', req.body)
+  const key = rave.security.getEncryptionKey(SECRET_KEY);
+  const client = rave.security.encrypt(key, JSON.stringify(req.body))
+  const alg = '3DES-24'
+  axios.post('https://ravesandboxapi.flutterwave.com/flwv3-pug/getpaidx/api/charge', { PBFPubKey: key, client, alg })
     .then(res => {
       console.log('Received qr response');
       txRef = resp.body.data.txRef;
@@ -88,8 +72,8 @@ router.post('/qr', (req, res) => {
 router.post('/validate', (req, res) => {
   rave.Card.validate(req.body)
     .then(resp => {
-      console.log('Successful validation');
-      res.json(resp.body.data)
+      console.log('Successful validation', res.body);
+      res.json(resp.body)
     })
     .catch(err => {
       console.log('Error in validation');

@@ -14,7 +14,7 @@ const user = {
 
 let jwt;
 
-describe.only('POST /users/create', () => {
+describe('POST /users/create', () => {
   before(function() {
     Users.deleteMany({ username: /.+/}, (err) => {
       if (err) return console.log(err)
@@ -97,16 +97,12 @@ describe.only('POST /users/create', () => {
   it('Should authenticate with jwt', done => {
     request.get('/api/users/protected')
       .set('Accept', 'application/json')
-      // .set('Authentication', `Bearer ${jwt}`)
-      .set('Authentication', `${jwt}`)
-      // .expect(200)
+      .set('Authorization', `Bearer ${jwt}`)
+      .expect(200)
       .end((err, res) => {
-        console.log(res.text);
         if (err) return done(err)
         expect(res.body).to.have.include.all.keys('id', 'createdAt', 'username', 'email');
         expect(res.body).to.have.property('username', user.username);
-        expect(res.body.password).to.not.equal(user.email.password);
-        jwt = res.body.jwt;
         done();
       })
   })

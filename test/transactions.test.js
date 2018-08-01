@@ -5,16 +5,16 @@ const expect = chai.expect;
 const {
   payload1,
   PBFPubKey,
-  otp1
+  otp1,
+  qr_req
 } = require('./utils')
 
 let transaction_reference;
 
 describe('GET /banks', () => {
-  it('Should should show banks', done => {
+  it('Should show banks', done => {
     request.get('/api/transactions/banks')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp).to.not.be.undefined;
@@ -22,10 +22,9 @@ describe('GET /banks', () => {
         done();
       })
   })
-  it('Should should show banks with bankname bankcode and internetbanking', done => {
+  it('Should show banks with bankname bankcode and internetbanking', done => {
     request.get('/api/transactions/banks')
       .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp).to.not.be.undefined;
@@ -36,7 +35,7 @@ describe('GET /banks', () => {
 })
 
 describe('POST /api/transactions/charge', () => {
-  it('Should should successfully charge', done => {
+  it('Should successfully charge', done => {
     request.post('/api/transactions/charge')
       .send(payload1)
       .set('Accept', 'application/json')
@@ -47,7 +46,7 @@ describe('POST /api/transactions/charge', () => {
         done();
       })
   })
-  it('Should should return a success response', done => {
+  it('Should return a success response', done => {
     request.post('/api/transactions/charge')
       .send(payload1)
       .set('Accept', 'application/json')
@@ -55,21 +54,30 @@ describe('POST /api/transactions/charge', () => {
       .end((err, resp) => {
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
-        expect(resp.body.data).to.have.include.all.keys('id', 'flwRef', 'raveRef');
-        transaction_reference = resp.body.data.flwRef;
+        if (resp.body.data.tx) {
+          expect(resp.body.data.tx).to.have.include.all.keys('id', 'flwRef', 'raveRef');
+          transaction_reference = resp.body.data.tx.flwRef;
+        } else {
+          expect(resp.body.data).to.have.include.all.keys('id', 'flwRef', 'raveRef');
+          transaction_reference = resp.body.data.flwRef;
+        }
         done();
       })
   })
 })
 
-
 describe('POST /api/transactions/verify', () => {
-  it('Should should successfully verify transaction', done => {
+  it('Should successfully verify transaction', done => {
     request.post('/api/transactions/validate')
-      .send({ otp: otp1, PBFPubKey ,transaction_reference })
+      .send({
+        otp: otp1,
+        PBFPubKey,
+        transaction_reference
+      })
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
+        console.log(resp.body)
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
         expect(resp.body.data).to.have.include.all.keys(
@@ -86,5 +94,30 @@ describe('POST /api/transactions/verify', () => {
         done();
       })
   })
+})
 
+describe.only('POST /api/transactions/qr', () => {
+  it.only('Create payent qr', done => {
+    request.post('/api/transactions/qr')
+      .send(qr_req)
+      .set('Accept', 'application/json')
+      .expect('Content-Type', /json/)
+      .end((err, resp) => {
+        console.log(resp.body)
+        if (err) return done(err)
+        expect(resp.body).to.not.be.undefined;
+        expect(resp.body.data).to.have.include.all.keys(
+          'avsresponsecode',
+          'avsresponsemessage',
+          'otptransactionidentifier',
+          'redirecturl',
+          'responsecode',
+          'responsehtml',
+          'responsemessage',
+          'responsetoken',
+          'transactionreference',
+        );
+        done();
+      })
+  })
 })

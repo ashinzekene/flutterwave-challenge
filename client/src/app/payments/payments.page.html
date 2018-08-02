@@ -10,5 +10,31 @@
 </ion-header>
 
 <ion-content padding>
-
+  <h1>
+    <ion-text color="primary">MAKE A PAYMENT</ion-text>
+  </h1>
+  <ion-item>
+    <ion-label color="primary" position="floating">Payment For</ion-label>
+    <ion-input type="text" [(ngModel)]="rave.custom_title" color="primary" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Name</ion-label>
+    <ion-input type="text" [(ngModel)]="rave.customer_firstname" color="primary" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Email</ion-label>
+    <ion-input type="email" [(ngModel)]="rave.customer_email" color="primary" minlength="5" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Phone Number</ion-label>
+    <ion-input type="tel" [(ngModel)]="rave.customer_phone" color="primary" required></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" position="floating">Amount</ion-label>
+    <ion-input type="number" [(ngModel)]="rave.amount" color="primary" minlength="5" required></ion-input>
+  </ion-item>
+  <div style="padding-top: 50px" class="button-container">
+    <ion-button angular-rave [raveOptions]='rave' (close)="paymentFailure()" (callback)="paymentSuccess($event)" shape="round" color="secondary" fill="outline">Pay Now</ion-button>
+  </div>
+  <h3 style="text-align: center" *ngIf="success">Payment successfull</h3>
 </ion-content>

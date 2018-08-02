@@ -3,18 +3,22 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Employee } from '../models/employee';
 import { Observable } from 'rxjs';
-import { StoreService } from './store.service';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeesService {
-  base_url = environment.base_url + '/employees';
+  private base_url = environment.base_url + '/employees';
 
-  constructor(private http: HttpClient, private storeService: StoreService) { }
+  constructor(private http: HttpClient, private storeService: StorageService) { }
 
   createEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.base_url + '/create', employee, { headers: this.storeService.headers });
+  }
+
+  check(k) {
+    console.log(k + '---jjjhhjhjjhjh');
   }
 
   editEmployee(employee: Employee): Observable<Employee> {

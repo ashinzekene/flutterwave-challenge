@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpHeaders } from '@angular/common/http';
 import { User } from '../models/user';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StoreService {
+export class StorageService {
   private _headers: HttpHeaders;
   private _user: User;
 
-  constructor() {}
+  constructor() { }
 
   getToken(): string {
     return window.localStorage.getItem('token') || '';

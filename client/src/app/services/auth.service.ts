@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
-import { StoreService } from './store.service';
+import { StorageService } from './storage.service';
+import { EmployeesService } from './employees.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,11 @@ import { StoreService } from './store.service';
 export class AuthService {
   private base_url = environment.base_url + '/users';
 
-  constructor(private http: HttpClient, private storeService: StoreService) { }
+  constructor(
+    private storeService: StorageService,
+    private http: HttpClient,
+    private emp: EmployeesService,
+  ) { }
 
   createUser(user: User): Observable<User> {
     return this.http.post<User>(this.base_url + '/create', user)
@@ -23,7 +28,8 @@ export class AuthService {
 
   setUser(user: User): User {
     console.log('Set user', user);
-    // this.storeService.setToken(user.jwt);
+    this.emp.check('hiiidif');
+    this.storeService.setToken(user.jwt);
     this.storeService.user = user;
     return user;
   }

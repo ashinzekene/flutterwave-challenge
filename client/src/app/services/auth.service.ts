@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/user';
 import { environment } from '../../environments/environment';
@@ -11,34 +11,47 @@ import { StoreService } from './store.service';
 })
 export class AuthService {
   private base_url = environment.base_url + '/users';
-  user: User;
 
-  constructor(private http: HttpClient, private store: StoreService) { }
+  constructor(private http: HttpClient, private storeService: StoreService) { }
 
-  createUser(username: string, email: string, password: string): Observable<Promise<User>> {
-    return this.http.post(this.base_url + '/create', { username, email, password })
+  createUser(user: User): Observable<User> {
+    return this.http.post<User>(this.base_url + '/create', user)
       .pipe(
-        map((res: Response) => res.json()),
         map(this.setUser)
       );
   }
 
-  setUser(user: User) {
+  setUser(user: User): User {
     console.log('Set user', user);
-    this.store.setToken(user.jwt);
-    this.user = user;
+    // this.storeService.setToken(user.jwt);
+    this.storeService.user = user;
+    return user;
   }
 
-  login(user: { username: string, password: string }): Observable<Promise<User>> {
-    return this.http.post(this.base_url + 'login', user)
+  getAuthUser(): Observable<User> {
+    const token = this.storeService.getToken();
+    if (token) {
+      console.log('User is authenticated');
+      this.storeService.setHeader('Authentication', `Bearer ${token}`);
+    } else {
+      console.log('User is not authenticated');
+    }
+    return this.http.get<User>(this.base_url + '/me', { headers: this.storeService.headers })
       .pipe(
-        map((res: Response) => res.json()),
         map(this.setUser)
       );
   }
 
-  private generateHeaders() {
-    return { };
+  logOut(): Promise<void> {
+    this.storeService.user = null;
+    return Promise.resolve(this.storeService.destroyToken());
+  }
+
+  login(user: { username: string, password: string }): Observable<User> {
+    return this.http.post<User>(this.base_url + '/login', user)
+      .pipe(
+        map(this.setUser)
+      );
   }
 
 }

@@ -5,15 +5,21 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="form-container">
+  <div *ngIf="success">
     <h1>
-      <ion-text color="primary">CREATE AN ACCOUNT</ion-text>
+      <ion-text color="primary">{{ successText }}</ion-text>
+    </h1>
+  </div>
+  <div *ngIf="!success" class="form-container">
+    <h1>
+      <ion-text *ngIf="!logIn" color="primary">CREATE AN ACCOUNT</ion-text>
+      <ion-text *ngIf="logIn" color="primary">WELCOME BACK</ion-text>
     </h1>
     <ion-item>
       <ion-label color="primary" position="floating">Username</ion-label>
       <ion-input type="text"[(ngModel)]="username" color="primary" minlength="5" required></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="signUp">
       <ion-label color="primary" position="floating">Email</ion-label>
       <ion-input type="email"[(ngModel)]="email" color="primary" minlength="5" required></ion-input>
     </ion-item>
@@ -22,7 +28,8 @@
       <ion-input type="password"[(ngModel)]="password" color="primary" minlength="5" required></ion-input>
     </ion-item>
     <div class="button-container">
-      <ion-button (click)="createAccount()" shape="round" href='/auth' color="primary" fill="outline">Sign Up</ion-button>
+      <ion-button (click)="authenticate()" shape="round" href='/auth' color="primary" fill="outline">{{ logIn ? 'Log In' : 'Sign Up' }}</ion-button>
+      <ion-button (click)="changeAuthType()" shape="round" href='/auth' color="primary" fill="outline">{{ changeText }}</ion-button>
     </div>
   </div>
 </ion-content>

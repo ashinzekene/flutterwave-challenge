@@ -14,7 +14,7 @@ const user = {
 
 let jwt;
 
-describe('POST /users/create', () => {
+describe.only('POST /users/create', () => {
   before(function() {
     Users.deleteMany({ username: /.+/}, (err) => {
       if (err) return console.log(err)
@@ -95,7 +95,7 @@ describe('POST /users/create', () => {
       })
   })
   it('Should authenticate with jwt', done => {
-    request.get('/api/users/protected')
+    request.get('/api/users/me')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${jwt}`)
       .expect(200)

@@ -5,8 +5,8 @@ const Employee = require('../models/employee.model.js');
 const { requireAuth } = require('../utils/auth')();
 
 router.post('/create', requireAuth, (req, res) => {
+  req.body.employer = user.id
   Employee.create(req.body)
-    .then(employee => User.addEmployee(employee))
     .then(result => {
       res.json(result)
     })
@@ -17,7 +17,6 @@ router.post('/create', requireAuth, (req, res) => {
 
 router.post('/remove', requireAuth, (req, res) => {
   Employee.findByIdAndRemove(req.body.id)
-    .then(employee => User.removeEmployee(employee))
     .then(result => {
       res.json(result)
     })
@@ -27,6 +26,20 @@ router.post('/edit', requireAuth, (req, res) => {
   Employee.findByIdAndRemove(req.body.id)
     .then(employee => {
       res.json(employee);
+    })
+})
+
+router.get('/all', requireAuth, (req, res) => {
+  Employee.find({ employer: req.user.id })
+    .then(employees => {
+      res.json(employees);
+    })
+})
+
+router.post('/_all', (req, res) => {
+  Employee.find({})
+    .then(employees => {
+      res.json(employees);
     })
 })
 

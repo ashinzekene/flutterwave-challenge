@@ -1,11 +1,14 @@
 .result-container {
-  padding: 50px 0;
+  padding: 60px 0;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  h1 ion-text {
-    text-align: center;
-    display: block;
+  h1 {
+    width: 100%;
+    ion-text {
+      text-align: center;
+      display: block;
+    }
   }
 }

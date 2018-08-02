@@ -77,7 +77,6 @@ describe('POST /api/transactions/verify', () => {
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        console.log(resp.body)
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
         expect(resp.body.data).to.have.include.all.keys(
@@ -96,14 +95,13 @@ describe('POST /api/transactions/verify', () => {
   })
 })
 
-describe.only('POST /api/transactions/qr', () => {
-  it.only('Create payent qr', done => {
+describe('POST /api/transactions/qr', () => {
+  it('Create payent qr', done => {
     request.post('/api/transactions/qr')
       .send(qr_req)
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
       .end((err, resp) => {
-        console.log(resp.body)
         if (err) return done(err)
         expect(resp.body).to.not.be.undefined;
         expect(resp.body.data).to.have.include.all.keys(

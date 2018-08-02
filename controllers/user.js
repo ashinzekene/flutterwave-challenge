@@ -33,10 +33,4 @@ module.exports = {
         })
       })
   },
-  addEmployee() {
-    return Promise.resolve()
-  },
-  removeEmployee() {
-    return Promise.resolve()
-  }
 }

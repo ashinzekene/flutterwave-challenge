@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Employee } from '../models/employee';
 import { EmployeesService } from '../services/employees.service';
 import { AuthService } from '../services/auth.service';
@@ -8,16 +8,20 @@ import { AuthService } from '../services/auth.service';
   templateUrl: 'employees.page.html',
   styleUrls: ['employees.page.scss']
 })
-export class EmployeesPage {
+export class EmployeesPage implements OnInit {
   employees: Employee[];
   constructor(
     private employeesService: EmployeesService,
-    private authService: AuthService,
   ) { }
 
+  ngOnInit() {
+    this.getUsers();
+  }
+
   getUsers() {
-    const id = this.authService.user.id;
-    this.employeesService.getAllEmployees(id)
-      .subscribe(console.log);
+    this.employeesService.getAllEmployees()
+      .subscribe(employees => {
+        this.employees = employees;
+      });
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EmployeesService } from '../services/employees.service';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -15,16 +16,17 @@ export class CreateEmployeePage implements OnInit {
   pay: string;
 
   loading = false;
-  success = true;
+  success = false;
   failure = false;
   constructor(
     private authService: AuthService,
+    private router: Router,
     private employeesService: EmployeesService
   ) { }
 
   ngOnInit() {}
 
-  save() {
+  createEmployee() {
     const { name, bank_name, account_no, pay, email } = this;
     this.loading = true;
     this.employeesService.createEmployee({ name, bank_name, account_no, pay, email })

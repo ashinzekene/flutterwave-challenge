@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const User = require('../controllers/user');
 const Employee = require('../models/employee.model.js');
-const { requireAuth } = require('../utils/auth')();
+// const  } = require('../utils/auth')();
 
-router.post('/create', requireAuth, (req, res) => {
-  req.body.employer = user.id
+router.post('/create', (req, res) => {
+  req.body.employer = req.user && req.user.id || '5b6293e944f7f612533b9b4b';
   Employee.create(req.body)
     .then(result => {
       res.json(result)
@@ -15,22 +15,23 @@ router.post('/create', requireAuth, (req, res) => {
     })
 })
 
-router.post('/remove', requireAuth, (req, res) => {
+router.post('/remove', (req, res) => {
   Employee.findByIdAndRemove(req.body.id)
     .then(result => {
       res.json(result)
     })
 })
 
-router.post('/edit', requireAuth, (req, res) => {
+router.post('/edit', (req, res) => {
   Employee.findByIdAndRemove(req.body.id)
     .then(employee => {
       res.json(employee);
     })
 })
 
-router.get('/all', requireAuth, (req, res) => {
-  Employee.find({ employer: req.user.id })
+router.get('/all', (req, res) => {
+  const id = req.user && req.user.id || '5b6293e944f7f612533b9b4b';
+  Employee.find({ employer: id })
     .then(employees => {
       res.json(employees);
     })

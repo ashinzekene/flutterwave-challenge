@@ -17,10 +17,6 @@ export class EmployeesService {
     return this.http.post<Employee>(this.base_url + '/create', employee, { headers: this.storeService.headers });
   }
 
-  check(k) {
-    console.log(k + '---jjjhhjhjjhjh');
-  }
-
   editEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.base_url + '/edit', employee, { headers: this.storeService.headers });
   }

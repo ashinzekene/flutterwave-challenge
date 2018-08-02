@@ -4,7 +4,8 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
-  base_url: 'http://localhost:4321/api'
+  base_url: 'http://localhost:4321/api',
+  public_key: 'FLWPUBK-f836a1f887a847ea500cbffcfee9ce45-X'
 };
 
 /*

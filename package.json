@@ -9,6 +9,7 @@
     "server": "nodemon --exec node -r dotenv/config server.js dotenv_config_path=.env-dev --ignore tests/ --ignore client/",
     "dev": "concurrently npm:server npm:client",
     "test": "mocha test/*.test.js -c -t 12000 --exit",
+    "heroku:postbuild": "cd client/ && npm i && ng build --prod",
     "test-watch": "nodemon --exec npm test"
   },
   "author": "Ashinze Ekene",
@@ -16,7 +17,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bcrypt": "^3.0.0",
-  "bluebird": "^3.5.1",
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",

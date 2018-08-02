@@ -15,7 +15,7 @@
     </h1>
   </div>
   <div class="result-container" *ngIf="failure">
-    <ion-icon color="secondary" name="warning"></ion-icon>
+    <ion-icon color="secondary" size="large" name="warning"></ion-icon>
     <h1>
       <ion-text color="primary">Could not create an Employee</ion-text>
     </h1>
@@ -45,6 +45,6 @@
       <ion-input type="number" [(ngModel)]="pay" color="primary" minlength="5" required></ion-input>
     </ion-item>
     <div class="button-container">
-      <ion-button (click)="createAccount()" shape="round" href='/auth' color="primary" fill="outline">Create</ion-button>
+      <ion-button (click)="createEmployee()" shape="round" color="primary" fill="outline">Create</ion-button>
     </div>
   </div>

@@ -28,7 +28,6 @@ export class AuthService {
 
   setUser(user: User): User {
     console.log('Set user', user);
-    this.emp.check('hiiidif');
     this.storeService.setToken(user.jwt);
     this.storeService.user = user;
     return user;

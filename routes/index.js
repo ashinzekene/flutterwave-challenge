@@ -8,7 +8,8 @@ router.get('/drop', (req, res) => {
       res.json({ err: 'dropped' });
     })
 })
-router.post('/', (req, res) => res.json({ err: 'post success' }))
+router.post('/', (req, res) => res.json({ api: 'post success' }))
+router.get('/', (req, res) => res.json({ api: 'api works' }))
 router.use('/users', require('./users'))
 router.use('/employees', require('./employees'))
 router.use('/payments', require('./payments'))
